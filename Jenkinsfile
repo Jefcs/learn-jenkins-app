@@ -94,8 +94,19 @@ pipeline {
                         echo "Deplyoing to Netlify. Site ID: $NETLIFY_SITE_ID"
                         node_modules/.bin/netlify status
                         node_modules/.bin/netlify deploy --dir=build --prod
-                        checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'githubtoken', url: 'https://github.com/Jefcs/learn-jenkins-app.git']])
                     '''
+                }
+            }
+
+            stage('Hook') {
+                agent {
+                    docker {
+                        image 'node:18-alpine'
+                        reuseNode true
+                    }
+                }
+                steps {          
+                    checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'githubtoken', url: 'https://github.com/Jefcs/learn-jenkins-app.git']])
                 }
             }
     }
