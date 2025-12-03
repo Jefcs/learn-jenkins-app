@@ -97,17 +97,5 @@ pipeline {
                     '''
                 }
             }
-
-            stage('Hook') {
-                agent {
-                    docker {
-                        image 'node:18-alpine'
-                        reuseNode true
-                    }
-                }
-                steps {          
-                    checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'githubtoken', url: 'https://github.com/Jefcs/learn-jenkins-app.git']])
-                }
-            }
     }
 }
